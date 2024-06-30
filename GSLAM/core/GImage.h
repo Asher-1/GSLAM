@@ -275,7 +275,7 @@ public:
     {
         if(refCount) CV_XADD(refCount,1);
     }
-#elif CV_VERSION_MAJOR == 3
+#elif CV_VERSION_MAJOR == 3 || CV_VERSION_MAJOR == 4
     inline operator cv::Mat()const
     {
         if(!data) return cv::Mat();

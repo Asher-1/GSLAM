@@ -23,6 +23,19 @@ message("-- Build type: " ${CMAKE_BUILD_TYPE})
 
 include_directories(. GSLAM/core)
 
+if(APPLE) # fix glew issues
+    # set(GLEW_LIBRARY "GLEW" PARENT_SCOPE)
+    # add_compile_options(-DGLEW_LIBRARY=GLEW)
+    # add_compile_definitions(-DGLEW_LIBRARY=GLEW)
+    find_package(PkgConfig)
+    pkg_search_module(GLEW REQUIRED glew)
+    MESSAGE(STATUS "glew dirs:" ${GLEW_INCLUDE_DIRS})
+    MESSAGE(STATUS "glew lib: " ${GLEW_LIBRARIES})
+    MESSAGE(STATUS "glew lib dir: " ${GLEW_LIBRARY_DIRS})
+    include_directories(${GLEW_INCLUDE_DIRS})
+    link_directories(${GLEW_LIBRARY_DIRS})
+endif(APPLE)
+
 pi_add_target(gslam BIN GSLAM/gslam REQUIRED System LTO)
 pi_add_target(gslam_qviz SHARED GSLAM/plugins/qviz/mainwindow REQUIRED System Qt)
 pi_add_target(gslam_tests SHARED GSLAM/plugins/tests REQUIRED System LTO MODULES OpenCV)
